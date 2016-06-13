@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="jquery-2.1.1.min.js"></script>
+		<link href="/Testing2/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<title>Testing!</title>
+		<script>
+			//how often the program takes photos from google picasa
+			_googlePlusPhotoRefreshPeriodMins = 60;
+			_rotatingImageInterval = null;
+			_rotatingImageIntervalSecs = 5;
+
+			//refreshing div
+			//http://crunchify.com/how-to-refresh-div-content-without-reloading-page-using-jquery-and-ajax/
+		    $(document).ready(
+		        function() {
+		            setInterval(function() {
+		            	var currentStatus = "";
+		            	$.get( "readStatus.php", function( data ) {
+							currentStatus = data;
+						  	if(currentStatus === "Good read"){
+								changeFrontAndMiddleLayer("green");
+							} else if(currentStatus === "Bad read"){
+								changeFrontAndMiddleLayer("red");
+							}
+						});
+		            }, 500);
+
+		    });
+		    
+			_makeabilityLabAndroidDoorStrikeAlbumId = "7777777";//album id goes here
+	        _listOfPhotoUrls = []; //global var that tracks urls to photos in Google+ stream
+
+
+	        //load an initial photo 
+	        //loadInitialPhoto();
+
+	        //immediately load photos from google picasa and set an interval
+			listAllGooglePicasaPhotosForUser("exampleuser", processList);//user name goes here and below
+	        setInterval(function() {
+	        	listAllGooglePicasaPhotosForUser("exampleuser", processList);
+	        }, _googlePlusPhotoRefreshPeriodMins*60000);
+	        
+	        
+
+
+	        // This code is a remix of: http://stackoverflow.com/questions/8213985/getting-full-image-from-link-on-photosharing-services
+	        // See also: http://mattryall.net/blog/2008/06/flickr-api-and-jquery
+	        // This function lists all photos across all albums for the given userId in Google Picasa
+	        //
+	        function listAllGooglePicasaPhotosForUser(userId, callbackWhenComplete){
+	            var googlePicasaUrl = "https://picasaweb.google.com/data/feed/api/user/" + userId;
+	            var listOfPhotoUrls = [];
+	            $.getJSON(googlePicasaUrl + "?callback=?", {
+	                alt : "json"
+	            }, function(data) {
+	                $.each(data.feed.entry, function(i, item) {
+	                    //Get each albumId.
+	                    var albumId = item.gphoto$id.$t;
+	                    $.getJSON(googlePicasaUrl + "/albumid/" + albumId + "?callback=?",
+	                            {
+	                                alt: "json",
+	                                //imgmax: "d" //the 'd' parameter tells Google to return the original sized image
+	                                //See : https://developers.google.com/picasa-web/docs/2.0/reference#Parameters
+	                                imgmax: "1024"
+	                            }, function(data) {
+	                                $.each(data.feed.entry, function(i,item){
+	                                    // Get the URL to each image in the album.
+	                                    var url = item.content.src;
+	                                    listOfPhotoUrls.push(url);
+	                                    var image = $("<img/>").attr("src", url);
+	                                    // Put the image into a div with id "list"
+	                                    //$("#jonPublicAlbums").append(image);
+	                                });
+	                                callbackWhenComplete(listOfPhotoUrls);
+	                            }
+	                    );
+	                });
+	            });
+	        }
+
+	        function processList(newList){
+	            _listOfPhotoUrls = newList;
+
+	            var i = 0;
+	            var max = _listOfPhotoUrls.length;
+
+	            if(_rotatingImageIntervalSecs != null){
+	            	clearInterval(_rotatingImageIntervalSecs);
+	            }
+	            
+	            //goes through array every 5 seconds
+	            _rotatingImageInterval = setInterval(function(){
+	            	var index = i % max;
+	            	document.getElementById("rotatingImage").src = _listOfPhotoUrls[index];
+	            	i++;
+	            }, _rotatingImageIntervalSecs * 1000);
+
+	        }
+
+		    function grantedTimeOut() {
+			    var timeLeft = 5,
+			        cinterval;
+
+			    var timeDec = function (){
+			        timeLeft--;
+			        if(timeLeft === 0){
+			            clearInterval(cinterval);
+			            window.location.replace("testing2.html");
+			        }
+			    };
+
+			    cinterval = setInterval(timeDec, 1000);
+			};
+
+			function deniedTimeOut() {
+			    var timeLeft = 120,
+			        cinterval;
+
+			    var timeDec = function (){
+			        timeLeft--;
+			        if(timeLeft === 0){
+			            clearInterval(cinterval);
+			            window.location.replace("testing2.html");
+			        }
+			    };
+
+			    cinterval = setInterval(timeDec, 1000);
+			};
+
+
+
+		    function btntest_onclick() {
+			  	var email = document.getElementById("myForm")[1].value;
+			  	var name = document.getElementById("myForm")[0].value;
+			  	var indexofAt=email.indexOf("@");
+			  	var emailIdent=email.substring(0, indexofAt);
+			  	email=email.substring(indexofAt+1, email.length);
+			  	var indexofDot=email.indexOf(".");
+			  	var domain=email.substring(0, indexofDot);
+			  	var fin=email.substring(indexofDot+1, email.length);
+			  	//$.post("submitRequest.php", {subName: name, subEmail: email});
+			     	window.location.href = "submitRequest.php?name="+name+"&emailName="+emailIdent+"&emailDomain="+domain+"&emailFin="+fin;
+			     	//window.location.href="requestSent.html";
+			}
+
+			function changeFrontAndMiddleLayer(newColor){
+				document.getElementById("overlay").style.backgroundColor = newColor;
+				if(newColor === "green"){
+					document.getElementById("statement").innerHTML = "ACCESS GRANTED! HAVE A HACKFUL DAY!";
+					document.getElementById("theForm").style.visibility = "hidden";
+					grantedTimeOut();
+
+
+				} else if(newColor === "red"){
+					document.getElementById("statement").innerHTML = "ACCESS NOT GRANTED! PLEASE FILL OUT...";
+					
+					document.getElementById("theForm").style.visibility = "visible";
+					deniedTimeOut();
+
+				}
+
+			}
+
+		</script>
+	</head>
+	<body>
+		<div id="container">
+			<img id = "rotatingImage" src = "/Testing2/benApple.JPG"/>
+		</div>
+
+		<!-- overlay, middle layer -->
+			<div id="overlay"></div>
+		<!-- text and logo, front layer -->
+		<div id="frontLayer">
+			<div>
+				<p id="welcome">WELCOME TO THE</p>
+				<img id="logo" src="HCIL_Hackerspace_Logo_Round_White_No_Border.png" />
+			</div>
+			<p>
+
+			</p>
+			<p id = "statement">PLEASE SWIPE YOUR CARD FOR ACCESS...</p>
+
+
+
+			<div id="theForm">
+				<form id ="myForm">
+		    		<div class="form-group">
+		        		<input style = "text-transform: uppercase" type="email" class="form-control" name="inputName" placeholder="Name">
+		    		</div>
+		    		<div class="form-group">       
+	        			<input type="email" class="form-control" name="inputEmail" placeholder="example@gmail.com">
+	        	    </div>
+	       			<a href="#" id="btntest"  onclick="return btntest_onclick()" class="btn btn-warning btn-large">Request Access!</a> </center>
+				</form>				
+			</div>
+
+		</div>
+		
+		<div id = "filler"></div>
+
+		<!-- http://stackoverflow.com/questions/19636946/pass-javascript-variable-to-php-and-return-php-result-to-javascript-variable -->
+	</body>
+</html>
+
+
+<style type="text/css">
+	#container {
+		position: fixed;
+		left: 0;
+		top: 0;
+		height: 603px;
+
+	}
+
+	/*
+	#filler {
+		position: absolute;
+		background-color: black;
+		width: 962px;
+		height: 5px;
+		bottom: 0px;
+		left: 0px;
+	}
+	*/
+
+	#statement {
+		text-align: center;
+	}
+
+	#rotatingImage { 
+	    position: absolute; 
+	    top: -20px; 
+	    left: -60px; 
+	    right: 0px; 
+	    bottom: 0px; 
+	    clip:rect(0px,1022px,800px,0px);
+
+	}
+
+
+
+	#logo{
+		width: 356px;
+		height: 219px;
+		
+	}
+
+	/* overlay, middle layer */
+	#overlay {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 962px;
+		height: 603px;
+		background: #000;
+		opacity: 0.55;
+	}
+
+	/* text, front layer */
+	#frontLayer{
+		position: fixed;
+		top: 19%;
+		left: 25%;
+		text-align: center;
+		font-family: Segoe UI Light;
+		font-size: 26px;
+		color: #FFF;
+	}
+
+	#welcome {
+		font-size: 18px;
+		position: relative;
+		top: 60px;
+		right: 100px;
+	}
+
+	#theForm {
+		visibility: hidden;
+	}
+
+	input:focus {
+		zoom: 220%;
+		position: absolute;
+		top: 0;
+		left:0;
+	}
+
+</style>

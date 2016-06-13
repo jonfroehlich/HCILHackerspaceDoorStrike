@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+	<head>
+		<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+	</head>
+	<body background="Crossroads_1366x768_hd_laptop.jpg">
+		<div class = "overlay">
+			<h1>Welcome!</h1>
+			<p>Please Swipe Your Access Card</p>
+		</div>
+	</body>
+</html>
+<script>
+	
+</script>
+<?php
+// Create connection
+$con=mysqli_connect("192.168.1.10","root","password","doorMaster");
+
+// Check connection
+if (mysqli_connect_errno()) {
+  echo "Failed to connect to MySQL: " . mysqli_connect_error();
+  header( "Location: serverDown.html" ) ;
+	die();
+}
+$result = mysqli_query($con, "SELECT * FROM status");
+
+
+
+while($row = mysqli_fetch_array($result)) {
+	$currentStatus = $row['status'];
+}
+if(strcmp($currentStatus,"Bad swipe") == 0){
+	header( "Location: accessDenied.html" ) ;
+	die();
+}
+if(strcmp($currentStatus,"Good swipe") == 0){
+	header( "Location: accessGranted.html" ) ;
+	die();
+}
+
+mysqli_close($con);
+?>
+<style type="text/css">
+	body { 
+	    background-color: rgba(0, 66, 255, 0.3);
+	}
+
+	h1,p {
+	    color: #FFFFFF;
+	    text-align: center;
+	}
+
+	p {
+	    font-family: "Times New Roman";
+	    font-size: 20px;
+	}
+
+	.overlay {
+		position:absolute;
+		top:0;
+		left:0;
+		width:100%;
+		height:100%;
+		background:#000;
+		opacity: 0.6;
+	}
+</style>

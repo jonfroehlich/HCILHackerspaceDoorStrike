@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Testing Form</title>
+	</head>
+	<body>
+		<script>
+			var form = document.createElement("form");
+					form.setAttribute('method',"post");
+					form.setAttribute('action',"submitRequest.php");
+
+					var name = document.createElement("input"); //input element, name
+					name.setAttribute('type',"text");
+					name.setAttribute('name',"username");
+
+					var email = document.createElement("input"); //input element, email
+					email.setAttribute('type', "text");
+					email.setAttribute('name',"email");
+
+
+					var submit = document.createElement("input"); //input element, Submit button
+					submit.setAttribute('type',"submit");
+					submit.setAttribute('value',"Submit");
+					form.appendChild(name);
+					form.appendChild(email);
+					form.appendChild(submit);
+
+					//and some more input elements here
+					//and dont forget to add a submit button
+
+					
+
+
+			document.getElementsByTagName('body')[0].appendChild(form);
+		</script>
+
+	</body>
+</html>

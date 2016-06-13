@@ -1,0 +1,83 @@
+body {
+	background-color: #33CC33;
+	font-family: Segoe UI Light;
+	color: white;
+}
+
+a {
+	color: white;
+	text-decoration: none;
+	font-size: 18px;
+}
+
+a:hover{
+	color: black;
+	
+}
+
+p {
+	font-size: 24px;
+	width: 925px;
+	margin: auto;
+	position: relative;
+	top: -70px;
+}
+
+#logo {
+	width: 150px;
+	height: 150px;
+}
+
+#navbar {
+	position: relative;
+	top: -95px;
+	left: 170px;
+}
+
+.docLink {
+	width: 150px;
+	height: 35px;
+	margin: auto;
+	text-align: center;
+	vertical-align: middle;
+	background-color: #87CEEB;
+	font-size: 20px;
+}
+
+.docLink:hover {
+	text-decoration: none;
+	background-color: yellow;
+}
+
+
+h1 {
+	position: relative;
+	top: -70px;
+	text-align: center;
+}
+
+
+
+table {
+	width: 650px;
+	margin: auto;
+	position: relative;
+	top: -70px;
+}
+
+#accUsers {
+	width: 1000px;
+	margin: auto;
+}
+
+button {
+	font-family: Segoe UI Light;
+	color: white;
+	background-color: #87CEEB;
+	margin: auto;
+	width: ;
+}
+
+button: hover{
+	background-color: yellow;
+}

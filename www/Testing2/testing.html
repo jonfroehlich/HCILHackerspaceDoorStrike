@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Testing!</title>
+		
+	</head>
+	<body>
+		<div class="container">
+			<div style = "background:red"><img src="Crossroads_1366x768_hd_laptop.jpg"/></div>
+			<div><img src="awesome-backgrounds-designs-hd-wallpapers-colorful-abstract-music-nature-space-desktop-really-cool-funny-cute-face-background-pics-awesome-2025207553.jpg"/></div>
+		</div>
+		<script src="jquery-2.1.1.min.js"></script>
+		<script>
+		$(document).ready(function(){
+		    $('.container div:gt(0)').hide();
+		    setInterval(function(){$('.container :first-child').fadeOut().next().fadeIn().end().appendTo('.container');}, 3000);
+		});
+		</script>
+	</body>
+</html>
+
+
+<style type="text/css">
+	img {
+		position: absolute;
+		top:0; right:0; bottom: 0; left: 0;
+	}
+
+</style>

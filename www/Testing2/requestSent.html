@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<script>
+
+(function () {
+    var timeLeft = 5,
+        cinterval;
+
+    var timeDec = function (){
+        timeLeft--;
+        document.getElementById('countdown').innerHTML = timeLeft;
+        if(timeLeft === 0){
+            clearInterval(cinterval);
+            window.location.replace("HackerspaceDoorStrike.html");
+        }
+    };
+
+    cinterval = setInterval(timeDec, 1000);
+})();
+</script>
+<html>
+	<head>
+	</head>
+	<body>
+		<div id="container">
+			<!-- uses a local image since it takes a little time for the website to pull down photos and will not show an image if the source is not initialized -->
+			<img id = "temporaryBackground" src = "/Testing2/benApple.JPG"/>
+		</div>
+
+		<!-- overlay, middle layer -->
+		<div id="overlay"></div>
+		<!-- text and logo, front layer -->
+		<div id="frontLayer">
+			<div id = "welcomeAndLogo">
+				<p id="welcome">WELCOME TO THE</p>
+				<img id="logo" src="HCIL_Hackerspace_Logo_Round_White_No_Border.png" />
+			</div>
+			<p>
+
+			</p>
+			<p id = "statement">REQUEST SENT! REDIRECTING IN <span id="countdown">5</span> SECONDS...</p>
+		</div>
+	</body>
+</html>
+<style type="text/css">
+	#container {
+		position: fixed;
+		left: 0;
+		top: 0;
+		height: 603px;
+	}
+
+	#statement {
+		position: relative;
+		font-family: Segoe UI Light;
+		font-size: 26px;
+		color: #FFF;
+		text-align: center;
+		top: 378px;
+	}
+
+	#temporaryBackground { 
+	    position: absolute; 
+	    top: -20px; 
+	    left: -60px; 
+	    right: 0px; 
+	    bottom: 0px; 
+	    clip:rect(0px,1022px,800px,0px);
+	}
+
+	#logo{
+		width: 356px;
+		height: 219px;		
+	}
+
+	/* overlay, middle layer */
+	#overlay {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 962px;
+		height: 603px;
+		background: #000;
+		opacity: 0.7;
+	}
+
+	#welcomeAndLogo {
+		position: fixed;
+		top: 20.2%;
+		left: 33%;
+		font-family: Segoe UI Light;
+		font-size: 26px;
+		color: #FFF;
+		text-align: center;
+	}
+
+	#welcome {
+		font-size: 18px;
+		position: relative;
+		top: 64px;
+		right: 100px;
+	}
+</style>
