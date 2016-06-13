@@ -36,7 +36,7 @@ except Exception as e:
     server.ehlo()
     server.starttls()
     server.ehlo
-    server.login("exampleemail@gmail.com", "MakingIsFun!")
+    server.login("exampleemail@gmail.com", "password")
     subject="Alert - Door strike has crashed: %s" % str( e)[:20]
     text="\nHelp! I've Crashed due to %s, please make sure I am still functioning properly after self-reboot. I will now attempt to reboot myself..."%str(e)
     msg="Subject: %s\n\n%s" % (subject, text)
